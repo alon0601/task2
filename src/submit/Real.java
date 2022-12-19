@@ -12,12 +12,12 @@ public class Real implements Bridge {
     private Shows shows = new Shows();
     @Override
     public void addCity(String city) {
-
+        shows.addCity(city);
     }
 
     @Override
     public void addHall(String city, String hall, int sits) {
-
+        shows.addHall(city,hall,sits);
     }
 
     @Override
