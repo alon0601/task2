@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class Shows {
     private final List<ShowInfo> shows;
+
+    private int showID = 0;
     private final Map<String,Set<Pair<String,Integer>>> citiesHallsMap;//city->{(hall,sits)}
     public Shows(){
         shows = new LinkedList<>();
@@ -17,6 +19,15 @@ public class Shows {
     public ShowInfo getShow(int showID){
         ShowInfo info =  shows.get(showID);
         return info;
+    }
+
+    public List<ShowInfo> getShows() {
+        return shows;
+    }
+
+    public void addShow(ShowInfo showInfo){
+        shows.add(showInfo);
+        showID++;
     }
 
     public void addCity(String city){

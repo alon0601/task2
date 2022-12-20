@@ -5,13 +5,13 @@ import main.data.OrderInfo;
 
 
 public class Orders {
-    private List<OrderInfo> orders;
-    private List<OrderInfo> waitingOrders;
+    private Map<Integer,List<OrderInfo>> orders;
+    private Map<Integer,List<OrderInfo>> waitingOrders;
     private int orderID;
 
     public Orders(){
-        this.orders = new ArrayList<>();
-        this.waitingOrders = new ArrayList<>();
+        this.orders = new HashMap<>();
+        this.waitingOrders = new HashMap<>();
         this.orderID = 1;
     }
 
@@ -19,20 +19,31 @@ public class Orders {
         return this.orderID;
     }
 
-    public List<OrderInfo> getOrders() {
-        return orders;
+    public List<OrderInfo> getOrders(int memberID) {
+        return orders.get(memberID);
     }
 
-    public List<OrderInfo> getWaitingOrders() {
-        return waitingOrders;
+    public List<OrderInfo> getWaitingOrders(int showID) {
+        return waitingOrders.get(showID);
     }
 
     public int newOrder(OrderInfo order, int waiting) {
         if(waiting == 1){
-            waitingOrders.add(order);
+            List<OrderInfo> newI = this.waitingOrders.get(order.showId);
+            if (newI == null) {
+                newI = new ArrayList<>();
+            }
+            newI.add(order);
+            this.waitingOrders.put(order.showId,newI);
         }
         else{
-            orders.add(order);
+            List<OrderInfo> newI = this.orders.get(order.showId);
+            if(newI != null){
+                this.orders.put(order.memberId,newI);
+            }
+            else {
+                this.orders.put(order.memberId, new LinkedList<>());
+            }
         }
         int orderId = this.orderID;
         orderID++;

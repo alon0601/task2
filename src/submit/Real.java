@@ -4,10 +4,13 @@ import main.bridge.Bridge;
 import main.data.OrderInfo;
 import main.data.ShowInfo;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class Real implements Bridge {
+    private final int error = -1;
     private Orders orders = new Orders();
     private Shows shows = new Shows();
     @Override
@@ -39,27 +42,33 @@ public class Real implements Bridge {
     public int newOrder(OrderInfo order) {
         int waiting = 0;
         if(order.name == null || order.name =="")
-                throw new RuntimeException("member can not order tickets without name!");
+                return error;
         if(order.phone == null || order.phone == "")
-                throw new RuntimeException("member can not order tickets without phone number!");
+                return error;
         if(order.chairsIds == null || order.chairsIds.length == 0)
-                throw new RuntimeException("member can not order tickets without chairs!");
-        ShowInfo show = this.shows.getShow(order.showId);
-        if(show == null)
-                throw new RuntimeException("member can not order tickets to unknown show!");
-        for(int i = 0;i < order.chairsIds.length;i++){
-            if(order.memberId <= 0 && order.chairsIds[i] >= show.reserveMemberChairs.getKey() && order.chairsIds[i] <= show.reserveMemberChairs.getValue()){
-                throw new RuntimeException("Only Pais members can order reserved chairs!");
+             return error;
+        try {
+            ShowInfo show = this.shows.getShow(order.showId);
+            if (show == null)
+                return error;
+            for (int i = 0; i < order.chairsIds.length; i++) {
+                if (order.memberId <= 0 && order.chairsIds[i] >= show.reserveMemberChairs.getKey() && order.chairsIds[i] <= show.reserveMemberChairs.getValue()) {
+                    return error;
+                }
             }
+            long millis = Instant.now().toEpochMilli();
+            if(millis>shows.getShow(order.showId).lastOrderDate)
+                throw new RuntimeException("member can not order tickets after last order date!");
         }
-//        if(show.lastOrderDate)
-//        int orderID = orders.newOrder(order,waiting);
-        int orderID = 0;
+        catch (Exception e){
+        }
+
+        int orderID = orders.newOrder(order,1);
         return orderID;
     }
 
     @Override
     public List<OrderInfo> getWaitings(int id) {
-        return orders.getWaitingOrders();
+        return orders.getWaitingOrders(id);
     }
 }
