@@ -25,17 +25,18 @@ public class Real implements Bridge {
 
     @Override
     public void addAdmin(String city, String user, String pass) {
-
+        shows.addAdmin(user,pass,city);
     }
 
     @Override
     public int addNewShow(String user, String pass, ShowInfo showInfo) {
-        return 0;
+
+        return shows.addShow(user,pass,showInfo);
     }
+
 
     @Override
     public void reserveMemberChairs(int showID, int from, int to) {
-
     }
 
     @Override
