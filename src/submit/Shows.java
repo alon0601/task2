@@ -7,26 +7,25 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Shows {
-    private final List<ShowInfo> shows;
+    private final Map<Integer,ShowInfo> shows;
 
-    private static int showID = 1;
+    private static int showID;
     private final Map<String, Set<Pair<String, Integer>>> citiesHallsMap;//city->{(hall,sits)}
     private final Map<String, Admin> admins;
 
     public Shows() {
-        shows = new LinkedList<>();
+        showID = 1;
+        shows = new HashMap<>();
         this.citiesHallsMap = new HashMap<>();
         admins = new HashMap<>();
     }
+
 
     public ShowInfo getShow(int showID) {
         ShowInfo info = shows.get(showID);
         return info;
     }
 
-    public List<ShowInfo> getShows() {
-        return shows;
-    }
 
     public int addShow(String user, String password, ShowInfo showInfo) {
         if (!validAdmin(user, password) || !validShow(showInfo)|| !adminInCityOfShow(user,showInfo) )
@@ -34,8 +33,14 @@ public class Shows {
         Admin admin = admins.get(user);
         if (!showInfo.city.equals(admin.getCity()))
             return -1;
-
-        shows.add(showInfo);
+        Set<Pair<String, Integer>> ch = citiesHallsMap.get(showInfo.city);
+        int size = 0;
+        for(Pair<String, Integer> hall: ch){
+            if(hall.getKey() == showInfo.hall)
+                size = hall.getValue();
+        }
+        showInfo.reserveMemberChairs = new int[size];
+        shows.put(showID,showInfo);
         return showID++;
     }
 

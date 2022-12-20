@@ -19,7 +19,7 @@ public class ShowInfo {
 	public long showDate;
 	public long lastOrderDate;
 	public double ticketCost;
-	public Pair<Integer,Integer>  reserveMemberChairs;
+	public int[] reserveMemberChairs;
 	public List<OrderInfo> userstoinform = new LinkedList<>();
 
 	public ShowInfo() {
@@ -32,6 +32,14 @@ public class ShowInfo {
 				+ ", hastime=" + hastime + ", showTime=" + showTime + ", showDate=" + convertTime(showDate)
 				+ ", lastOrderDate=" + convertTime(lastOrderDate) + ", ticketCost=" + ticketCost + ", userstoinform="
 				+ userstoinform + "]";
+	}
+
+	public void setReserveMemberChairs(int start, int end){
+		if(start >= 0 && end < reserveMemberChairs.length){
+			for(int i = start; i < end; i++){
+				this.reserveMemberChairs[i] = 1;
+			}
+		}
 	}
 
 	public String convertTime(long time) {

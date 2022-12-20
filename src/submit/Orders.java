@@ -28,25 +28,28 @@ public class Orders {
     }
 
     public int newOrder(OrderInfo order, int waiting) {
+        List<OrderInfo> newI;
         if(waiting == 1){
-            List<OrderInfo> newI = this.waitingOrders.get(order.showId);
+            newI = this.waitingOrders.get(order.showId);
             if (newI == null) {
                 newI = new ArrayList<>();
+            }
+            for(OrderInfo orderInfo: newI){
+                if(orderInfo.name == order.name){
+                    return this.orderID++;
+                }
             }
             newI.add(order);
             this.waitingOrders.put(order.showId,newI);
         }
         else{
-            List<OrderInfo> newI = this.orders.get(order.showId);
-            if(newI != null){
-                this.orders.put(order.memberId,newI);
+            newI = this.orders.get(order.showId);
+            if(newI == null){
+                newI = new ArrayList<>();
             }
-            else {
-                this.orders.put(order.memberId, new LinkedList<>());
-            }
+            newI.add(order);
+            this.orders.put(order.showId,newI);
         }
-        int orderId = this.orderID;
-        orderID++;
-        return  orderId;
+        return  orderID++;
     }
 }

@@ -37,6 +37,7 @@ public class Real implements Bridge {
 
     @Override
     public void reserveMemberChairs(int showID, int from, int to) {
+        this.shows.getShow(showID).setReserveMemberChairs(from,to);
     }
 
     @Override
@@ -48,21 +49,17 @@ public class Real implements Bridge {
                 return error;
         if(order.chairsIds == null || order.chairsIds.length == 0)
              return error;
-        try {
-            ShowInfo show = this.shows.getShow(order.showId);
-            if (show == null)
+        ShowInfo show = this.shows.getShow(order.showId);
+        if (show == null)
+            return error;
+        for (int i = 0; i < order.chairsIds.length; i++) {
+            if (order.memberId <= 0 && show.reserveMemberChairs[order.chairsIds[i]] == 1) {
                 return error;
-            for (int i = 0; i < order.chairsIds.length; i++) {
-                if (order.memberId <= 0 && order.chairsIds[i] >= show.reserveMemberChairs.getKey() && order.chairsIds[i] <= show.reserveMemberChairs.getValue()) {
-                    return error;
-                }
             }
-            long millis = Instant.now().toEpochMilli();
-            if(millis>shows.getShow(order.showId).lastOrderDate)
-                throw new RuntimeException("member can not order tickets after last order date!");
         }
-        catch (Exception e){
-        }
+        long millis = Instant.now().toEpochMilli();
+        if(millis>shows.getShow(order.showId).lastOrderDate)
+            return error;
 
         int orderID = orders.newOrder(order,1);
         return orderID;
