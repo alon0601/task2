@@ -5,8 +5,6 @@ import main.data.OrderInfo;
 import main.data.ShowInfo;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class Real implements Bridge {
@@ -49,7 +47,7 @@ public class Real implements Bridge {
                 return error;
         if(order.chairsIds == null || order.chairsIds.length == 0)
              return error;
-        ShowInfo show = this.shows.getShow(order.showId);
+        Show show = this.shows.getShow(order.showId);
         if (show == null)
             return error;
         for (int i = 0; i < order.chairsIds.length; i++) {
@@ -58,7 +56,7 @@ public class Real implements Bridge {
             }
         }
         long millis = Instant.now().toEpochMilli();
-        if(millis>shows.getShow(order.showId).lastOrderDate)
+        if(millis>shows.getShow(order.showId).getShowInfo().lastOrderDate)
             return error;
 
         int orderID = orders.newOrder(order,1);

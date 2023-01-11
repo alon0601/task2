@@ -17,7 +17,6 @@ public class ShowInfo {
 	public long showDate;
 	public long lastOrderDate;
 	public double ticketCost;
-	public int[] reserveMemberChairs;
 	public List<OrderInfo> userstoinform = new LinkedList<>();
 
 	public ShowInfo() {
@@ -32,13 +31,7 @@ public class ShowInfo {
 				+ userstoinform + "]";
 	}
 
-	public void setReserveMemberChairs(int start, int end){
-		if(start >= 0 && end < reserveMemberChairs.length){
-			for(int i = start; i < end; i++){
-				this.reserveMemberChairs[i] = 1;
-			}
-		}
-	}
+
 
 	public String convertTime(long time) {
 		Date date = new Date(time);

@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Shows {
-    private final Map<Integer,ShowInfo> shows;
+    private final Map<Integer,Show> shows;
 
     private static int showID;
     private final Map<String, Set<Pair>> citiesHallsMap;//city->{(hall,sits)}
@@ -20,9 +20,9 @@ public class Shows {
     }
 
 
-    public ShowInfo getShow(int showID) {
-        ShowInfo info = shows.get(showID);
-        return info;
+    public Show getShow(int showID) {
+        Show show = shows.get(showID);
+        return show;
     }
 
 
@@ -38,8 +38,8 @@ public class Shows {
             if(hall.getKey() == showInfo.hall)
                 size = hall.getValue();
         }
-        showInfo.reserveMemberChairs = new int[size];
-        shows.put(showID,showInfo);
+        Show shw = new Show(showInfo,size);
+        shows.put(showID,shw);
         return showID++;
     }
 
