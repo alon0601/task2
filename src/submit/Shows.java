@@ -1,6 +1,5 @@
 package submit;
 
-import javafx.util.Pair;
 import main.data.ShowInfo;
 
 import java.util.*;
@@ -10,7 +9,7 @@ public class Shows {
     private final Map<Integer,ShowInfo> shows;
 
     private static int showID;
-    private final Map<String, Set<Pair<String, Integer>>> citiesHallsMap;//city->{(hall,sits)}
+    private final Map<String, Set<Pair>> citiesHallsMap;//city->{(hall,sits)}
     private final Map<String, Admin> admins;
 
     public Shows() {
@@ -33,9 +32,9 @@ public class Shows {
         Admin admin = admins.get(user);
         if (!showInfo.city.equals(admin.getCity()))
             return -1;
-        Set<Pair<String, Integer>> ch = citiesHallsMap.get(showInfo.city);
+        Set<Pair> ch = citiesHallsMap.get(showInfo.city);
         int size = 0;
-        for(Pair<String, Integer> hall: ch){
+        for(Pair hall: ch){
             if(hall.getKey() == showInfo.hall)
                 size = hall.getValue();
         }
@@ -72,7 +71,7 @@ public class Shows {
     public void addHall(String city, String hall, int sits) {
         if (!citiesHallsMap.containsKey(city) || citiesHallsMap.get(city).stream().map(Pair::getKey).collect(Collectors.toSet()).contains(hall))
             throw new RuntimeException("there is no such city in the system, or hall is already in the system");
-        citiesHallsMap.get(city).add(new Pair<>(hall, sits));
+        citiesHallsMap.get(city).add(new Pair(hall, sits));
     }
 
     public void addAdmin(String user, String pass, String city) {

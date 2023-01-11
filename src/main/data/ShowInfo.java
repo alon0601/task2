@@ -1,7 +1,5 @@
 package main.data;
 
-import javafx.util.Pair;
-
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
